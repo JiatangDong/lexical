@@ -20,6 +20,7 @@ import {
 import {$getRoot} from 'lexical';
 import {describe, expect, it} from 'vitest';
 
+import {$isMermaidNode, MermaidNode} from '../../src/nodes/MermaidNode';
 import {
   $setTableColumnWidthsManuallyResized,
   PLAYGROUND_TRANSFORMERS,
@@ -34,7 +35,7 @@ const TABLE_MARKDOWN = [
 function createTestEditor() {
   return createHeadlessEditor({
     namespace: 'MarkdownTransformers',
-    nodes: [TableNode, TableRowNode, TableCellNode],
+    nodes: [TableNode, TableRowNode, TableCellNode, MermaidNode],
     onError: error => {
       throw error;
     },
@@ -99,6 +100,30 @@ describe('PLAYGROUND_TRANSFORMERS table markdown', () => {
       expect($convertToMarkdownString(PLAYGROUND_TRANSFORMERS)).not.toContain(
         'lexical-table-column-widths',
       );
+    });
+  });
+});
+
+describe('PLAYGROUND_TRANSFORMERS Mermaid markdown', () => {
+  it('imports and exports fenced Mermaid diagrams as chart nodes', () => {
+    const editor = createTestEditor();
+    const markdown = ['```mermaid', 'graph TD', '  A-->B', '```'].join('\n');
+
+    editor.update(
+      () => {
+        $convertFromMarkdownString(markdown, PLAYGROUND_TRANSFORMERS);
+      },
+      {discrete: true},
+    );
+
+    editor.read(() => {
+      const node = $getRoot().getFirstChild();
+      expect($isMermaidNode(node)).toBe(true);
+      if (!$isMermaidNode(node)) {
+        throw new Error('Expected first root child to be a MermaidNode.');
+      }
+      expect(node.getSource()).toBe('graph TD\n  A-->B');
+      expect($convertToMarkdownString(PLAYGROUND_TRANSFORMERS)).toBe(markdown);
     });
   });
 });

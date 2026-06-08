@@ -21,4 +21,11 @@ describe('Prism code language options', () => {
     expect(normalizeCodeLanguage('golang')).toBe('go');
     expect(isCodeLanguageLoaded('go')).toBe(true);
   });
+
+  test('includes Mermaid', () => {
+    expect(getCodeLanguageOptions()).toContainEqual(['mermaid', 'Mermaid']);
+    expect(getLanguageFriendlyName('mermaid')).toBe('Mermaid');
+    expect(normalizeCodeLanguage('mermaid')).toBe('mermaid');
+    expect(isCodeLanguageLoaded('mermaid')).toBe(true);
+  });
 });

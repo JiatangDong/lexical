@@ -527,6 +527,10 @@ describe('Markdown', () => {
       md: '```unknown\nCode\n```',
     },
     {
+      html: '<pre spellcheck="false" data-language="mermaid"><span style="white-space: pre-wrap;">graph TD\n  A--&gt;B</span></pre>',
+      md: '```mermaid\ngraph TD\n  A-->B\n```',
+    },
+    {
       // Import only: prefix tabs will be removed for export
       html: '<pre spellcheck="false"><span style="white-space: pre-wrap;">Code</span></pre>',
       md: '\t```\nCode\n```',

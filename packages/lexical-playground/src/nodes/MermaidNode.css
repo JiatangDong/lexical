@@ -1,0 +1,92 @@
+.MermaidNode__container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 12px 0;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.MermaidNode__controls,
+.MermaidNode__modalControls {
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  padding: 6px;
+}
+
+.MermaidNode__controls button,
+.MermaidNode__modalControls button {
+  background: #f5f6f7;
+  border: 1px solid #ccd0d5;
+  border-radius: 4px;
+  color: #1c1e21;
+  cursor: pointer;
+  font: inherit;
+  min-height: 28px;
+  padding: 2px 8px;
+}
+
+.MermaidNode__controls button:hover,
+.MermaidNode__modalControls button:hover {
+  background: #ebedf0;
+}
+
+.MermaidNode__viewport {
+  overflow: auto;
+  padding: 16px;
+}
+
+.MermaidNode__diagram {
+  display: inline-block;
+  transform-origin: top left;
+  width: 100%;
+}
+
+.MermaidNode__diagram svg {
+  display: block;
+  height: auto;
+  max-width: none;
+  width: 100%;
+}
+
+.MermaidNode__error {
+  color: #b00020;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.MermaidNode__modal {
+  inset: 0;
+  position: fixed;
+  z-index: 1000;
+}
+
+.MermaidNode__modalBackdrop {
+  background: rgba(0, 0, 0, 0.45);
+  border: 0;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+}
+
+.MermaidNode__modalContent {
+  background: #fff;
+  border-radius: 8px;
+  bottom: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  left: 32px;
+  overflow: hidden;
+  position: absolute;
+  right: 32px;
+  top: 32px;
+}
+
+.MermaidNode__modalContent .MermaidNode__viewport {
+  flex: 1;
+}

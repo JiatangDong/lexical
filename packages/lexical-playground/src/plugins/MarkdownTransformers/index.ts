@@ -19,6 +19,7 @@ import {
   ElementTransformer,
   isTableRowDivider,
   MULTILINE_ELEMENT_TRANSFORMERS,
+  MultilineElementTransformer,
   TEXT_FORMAT_TRANSFORMERS,
   TEXT_MATCH_TRANSFORMERS,
   TextMatchTransformer,
@@ -52,6 +53,11 @@ import {
   EquationNode,
 } from '../../nodes/EquationNode';
 import {$createImageNode, $isImageNode, ImageNode} from '../../nodes/ImageNode';
+import {
+  $createMermaidNode,
+  $isMermaidNode,
+  MermaidNode,
+} from '../../nodes/MermaidNode';
 import {$createTweetNode, $isTweetNode, TweetNode} from '../../nodes/TweetNode';
 import emojiList from '../../utils/emoji-list';
 
@@ -153,6 +159,48 @@ export const TWEET: ElementTransformer = {
   },
   triggerOnEnter: true,
   type: 'element',
+};
+
+const MERMAID_START_REGEX = /^([ \t]*`{3,})mermaid[ \t]*$/;
+const MERMAID_END_REGEX = /^[ \t]*`{3,}[ \t]*$/;
+
+export const MERMAID: MultilineElementTransformer = {
+  dependencies: [MermaidNode],
+  export: node => {
+    if (!$isMermaidNode(node)) {
+      return null;
+    }
+
+    const source = node.getSource();
+    const backticks = source.match(/`{3,}/g);
+    const fence = backticks
+      ? '`'.repeat(Math.max(...backticks.map(match => match.length)) + 1)
+      : '```';
+
+    return `${fence}mermaid\n${source}\n${fence}`;
+  },
+  regExpEnd: {
+    optional: true,
+    regExp: MERMAID_END_REGEX,
+  },
+  regExpStart: MERMAID_START_REGEX,
+  replace: (rootNode, _children, _startMatch, _endMatch, linesInBetween) => {
+    if (linesInBetween == null) {
+      return false;
+    }
+
+    const lines = [...linesInBetween];
+    if (lines[0] === '') {
+      lines.shift();
+    }
+
+    while (lines.length > 0 && lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+
+    rootNode.append($createMermaidNode(lines.join('\n')));
+  },
+  type: 'multiline-element',
 };
 
 // Very primitive table setup
@@ -424,6 +472,7 @@ export const PLAYGROUND_TRANSFORMERS: Array<Transformer> = [
   EMOJI,
   EQUATION,
   TWEET,
+  MERMAID,
   CHECK_LIST,
   ...ELEMENT_TRANSFORMERS,
   ...MULTILINE_ELEMENT_TRANSFORMERS,

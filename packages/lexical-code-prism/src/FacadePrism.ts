@@ -28,6 +28,7 @@ import 'prismjs/components/prism-swift';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-mermaid';
 
 import {$createCodeHighlightNode} from '@lexical/code-core';
 import {$createLineBreakNode, $createTabNode, tokenizeRawText} from 'lexical';
@@ -51,6 +52,7 @@ export const CODE_LANGUAGE_FRIENDLY_NAME_MAP: Record<string, string> = {
   java: 'Java',
   js: 'JavaScript',
   markdown: 'Markdown',
+  mermaid: 'Mermaid',
   objc: 'Objective-C',
   plain: 'Plain Text',
   powershell: 'PowerShell',
