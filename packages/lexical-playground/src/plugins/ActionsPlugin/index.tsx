@@ -37,6 +37,7 @@ import {
   $getRoot,
   $insertNodes,
   $isParagraphNode,
+  $setSelection,
   CLEAR_EDITOR_COMMAND,
   CLEAR_HISTORY_COMMAND,
   COMMAND_PRIORITY_EDITOR,
@@ -161,7 +162,12 @@ export default function ActionsPlugin({
           const codeNode = $createCodeNode('markdown');
           $getRoot().clear().append(codeNode);
           codeNode.select().insertRawText(markdown);
-          codeNode.select(0, 0);
+          // Clear the selection instead of leaving a collapsed caret in the
+          // code node. The code-highlight transform can remap an in-code caret
+          // to an invalid text offset (-1) when the markdown contains certain
+          // fenced content (e.g. a serialized SideBySideDiffNode), which then
+          // throws in selection-style readers like the toolbar.
+          $setSelection(null);
         });
       } else if (nextMode === 'html') {
         const rawHtml = editor.read(() =>

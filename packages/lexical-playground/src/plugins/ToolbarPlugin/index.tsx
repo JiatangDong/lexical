@@ -98,6 +98,7 @@ import {INSERT_PAGE_BREAK} from '../PageBreakExtension';
 import {PagesReactExtension} from '../PagesReactExtension';
 import {InsertPollDialog} from '../PollExtension';
 import {SHORTCUTS} from '../ShortcutsPlugin/shortcuts';
+import {InsertSideBySideDiffDialog} from '../SideBySideDiffExtension';
 import {InsertTableDialog} from '../TablePlugin';
 import FontSize, {parseFontSizeForToolbar} from './fontSize';
 import {
@@ -1366,6 +1367,19 @@ export default function ToolbarPlugin({
                   className="item">
                   <i className="icon poll" />
                   <span className="text">Poll</span>
+                </DropDownItem>
+                <DropDownItem
+                  onClick={() => {
+                    showModal('Insert Side-by-Side Diff', onClose => (
+                      <InsertSideBySideDiffDialog
+                        activeEditor={activeEditor}
+                        onClose={onClose}
+                      />
+                    ));
+                  }}
+                  className="item">
+                  <i className="icon diagram-2" />
+                  <span className="text">Side-by-Side Diff</span>
                 </DropDownItem>
                 <DropDownItem
                   onClick={() => {

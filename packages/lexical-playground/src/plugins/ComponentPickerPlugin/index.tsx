@@ -46,6 +46,7 @@ import {INSERT_IMAGE_COMMAND, InsertImageDialog} from '../ImagesExtension';
 import InsertLayoutDialog from '../LayoutExtension/InsertLayoutDialog';
 import {INSERT_PAGE_BREAK} from '../PageBreakExtension';
 import {InsertPollDialog} from '../PollExtension';
+import {InsertSideBySideDiffDialog} from '../SideBySideDiffExtension';
 import {InsertTableDialog} from '../TablePlugin';
 
 export class ComponentPickerOption extends MenuOption {
@@ -252,6 +253,14 @@ export function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
       onSelect: () =>
         showModal('Insert Poll', onClose => (
           <InsertPollDialog activeEditor={editor} onClose={onClose} />
+        )),
+    }),
+    new ComponentPickerOption('Diff', {
+      icon: <i className="icon diagram-2" />,
+      keywords: ['diff', 'code', 'side by side', 'compare', 'patch'],
+      onSelect: () =>
+        showModal('Insert Side-by-Side Diff', onClose => (
+          <InsertSideBySideDiffDialog activeEditor={editor} onClose={onClose} />
         )),
     }),
     ...EmbedConfigs.map(
