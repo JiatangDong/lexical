@@ -19,6 +19,7 @@ import {
   ElementTransformer,
   isTableRowDivider,
   MULTILINE_ELEMENT_TRANSFORMERS,
+  MultilineElementTransformer,
   TEXT_FORMAT_TRANSFORMERS,
   TEXT_MATCH_TRANSFORMERS,
   TextMatchTransformer,
@@ -49,6 +50,11 @@ import {
   EquationNode,
 } from '../../nodes/EquationNode';
 import {$createImageNode, $isImageNode, ImageNode} from '../../nodes/ImageNode';
+import {
+  $createSideBySideDiffNode,
+  $isSideBySideDiffNode,
+  SideBySideDiffNode,
+} from '../../nodes/SideBySideDiffNode/SideBySideDiffNode';
 import {$createTweetNode, $isTweetNode, TweetNode} from '../../nodes/TweetNode';
 import emojiList from '../../utils/emoji-list';
 
@@ -131,6 +137,39 @@ export const EQUATION: TextMatchTransformer = {
   },
   trigger: '$',
   type: 'text-match',
+};
+
+// Renders a ```diff fenced code block as a side-by-side diff node. Placed
+// before the built-in CODE transformer so that the `diff` language is claimed
+// here, while every other language still falls through to a normal code block.
+export const SIDE_BY_SIDE_DIFF: MultilineElementTransformer = {
+  dependencies: [SideBySideDiffNode],
+  export: (node: LexicalNode) => {
+    if (!$isSideBySideDiffNode(node)) {
+      return null;
+    }
+    return '```diff\n' + node.getDiff() + '\n```';
+  },
+  regExpEnd: /^[ \t]*`{3,}$/,
+  regExpStart: /^[ \t]*`{3,}diff[ \t]*$/,
+  replace: (rootNode, children, _startMatch, _endMatch, linesInBetween) => {
+    if (linesInBetween == null) {
+      return false;
+    }
+    // The default multiline importer yields an empty leading/trailing entry for
+    // the portions of the fence lines around the content; drop those artifacts
+    // (a genuine diff line always carries a ` `/`+`/`-` marker, never '').
+    const lines = [...linesInBetween];
+    if (lines.length > 0 && lines[0] === '') {
+      lines.shift();
+    }
+    if (lines.length > 0 && lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+    rootNode.append($createSideBySideDiffNode(lines.join('\n')));
+    return;
+  },
+  type: 'multiline-element',
 };
 
 export const TWEET: ElementTransformer = {
@@ -317,6 +356,7 @@ export const PLAYGROUND_TRANSFORMERS: Array<Transformer> = [
   EQUATION,
   TWEET,
   CHECK_LIST,
+  SIDE_BY_SIDE_DIFF,
   ...ELEMENT_TRANSFORMERS,
   ...MULTILINE_ELEMENT_TRANSFORMERS,
   ...TEXT_FORMAT_TRANSFORMERS,

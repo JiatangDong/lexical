@@ -81,6 +81,7 @@ import {PageBreakExtension} from './plugins/PageBreakExtension';
 import {PagesReactExtension} from './plugins/PagesReactExtension';
 import PasteLogPlugin from './plugins/PasteLogPlugin';
 import {PollExtension} from './plugins/PollExtension';
+import {SideBySideDiffExtension} from './plugins/SideBySideDiffExtension';
 import {SpecialTextExtension} from './plugins/SpecialTextExtension';
 import {TabFocusExtension} from './plugins/TabFocusExtension';
 import {TerseExportExtension} from './plugins/TerseExportExtension';
@@ -204,6 +205,7 @@ const PlaygroundRichTextExtension = defineExtension({
     PageBreakExtension,
     PagesReactExtension,
     PollExtension,
+    SideBySideDiffExtension,
     EquationsExtension,
     LayoutExtension,
     ExcalidrawExtension,

@@ -1,0 +1,223 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+.SideBySideDiff__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+  font-family: Menlo, Consolas, Monaco, monospace;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* Toolbar with the view-mode toggle */
+.SideBySideDiff__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 6px 8px;
+  border-bottom: 1px solid #d0d7de;
+  background: #f6f8fa;
+}
+
+.SideBySideDiff__toggle {
+  display: inline-flex;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.SideBySideDiff__toggleBtn {
+  appearance: none;
+  border: none;
+  background: #ffffff;
+  color: #24292f;
+  font: inherit;
+  font-size: 11px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.SideBySideDiff__toggleBtn + .SideBySideDiff__toggleBtn {
+  border-left: 1px solid #d0d7de;
+}
+
+.SideBySideDiff__toggleBtn:hover {
+  background: #eaeef2;
+}
+
+.SideBySideDiff__toggleBtn--active {
+  background: #0969da;
+  color: #ffffff;
+}
+
+.SideBySideDiff__toggleBtn--active:hover {
+  background: #0969da;
+}
+
+/* Split (side-by-side) layout */
+.SideBySideDiff__panels {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 0;
+}
+
+.SideBySideDiff__panel {
+  flex: 1 1 50%;
+  min-width: 0;
+  max-height: 400px;
+  overflow: auto;
+  white-space: pre;
+}
+
+.SideBySideDiff__panel--left {
+  border-right: 1px solid #d0d7de;
+}
+
+.SideBySideDiff__panel--unified {
+  flex: 1 1 100%;
+}
+
+.SideBySideDiff__line {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 18px;
+}
+
+.SideBySideDiff__gutter {
+  flex: 0 0 auto;
+  width: 40px;
+  padding: 0 8px;
+  text-align: right;
+  color: #6e7781;
+  background: #f6f8fa;
+  user-select: none;
+  box-sizing: border-box;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.SideBySideDiff__content {
+  flex: 1 0 auto;
+  padding: 0 8px;
+  white-space: pre;
+}
+
+.SideBySideDiff__line--added {
+  background: #e6ffec;
+}
+
+.SideBySideDiff__line--added .SideBySideDiff__gutter {
+  background: #ccffd8;
+}
+
+.SideBySideDiff__line--removed {
+  background: #ffebe9;
+}
+
+.SideBySideDiff__line--removed .SideBySideDiff__gutter {
+  background: #ffd7d5;
+}
+
+.SideBySideDiff__line--empty {
+  background: #f6f8fa;
+}
+
+.SideBySideDiff__line--hunk {
+  background: #ddf4ff;
+  color: #57606a;
+}
+
+.SideBySideDiff__line--hunk .SideBySideDiff__gutter {
+  background: #ddf4ff;
+}
+
+.SideBySideDiff__line--collapsed {
+  background: #f6f8fa;
+  color: #57606a;
+  cursor: pointer;
+}
+
+.SideBySideDiff__line--collapsed:hover {
+  background: #eaeef2;
+}
+
+/* Unified (single column) layout */
+.SideBySideDiff__uline {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 18px;
+}
+
+.SideBySideDiff__ugutter {
+  flex: 0 0 auto;
+  width: 36px;
+  padding: 0 6px;
+  text-align: right;
+  color: #6e7781;
+  background: #f6f8fa;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.SideBySideDiff__umarker {
+  flex: 0 0 auto;
+  width: 16px;
+  text-align: center;
+  color: #6e7781;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.SideBySideDiff__uline--added {
+  background: #e6ffec;
+}
+
+.SideBySideDiff__uline--added .SideBySideDiff__ugutter,
+.SideBySideDiff__uline--added .SideBySideDiff__umarker {
+  background: #ccffd8;
+  color: #1a7f37;
+}
+
+.SideBySideDiff__uline--removed {
+  background: #ffebe9;
+}
+
+.SideBySideDiff__uline--removed .SideBySideDiff__ugutter,
+.SideBySideDiff__uline--removed .SideBySideDiff__umarker {
+  background: #ffd7d5;
+  color: #cf222e;
+}
+
+.SideBySideDiff__uline--hunk {
+  background: #ddf4ff;
+  color: #57606a;
+}
+
+.SideBySideDiff__uline--hunk .SideBySideDiff__ugutter {
+  background: #ddf4ff;
+}
+
+/* Intra-line (word level) highlights, shared by both views */
+.SideBySideDiff__seg--removed {
+  background: #ff818266;
+  border-radius: 2px;
+}
+
+.SideBySideDiff__seg--added {
+  background: #4ac26b66;
+  border-radius: 2px;
+}
